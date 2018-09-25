@@ -1,0 +1,85 @@
+snippet usage "usage(){....}"
+usage() {
+cat << EOF
+usage: \$0 options
+
+    -h|--help print this message
+    --dry-run dryrun
+    ${0}
+EOF
+exit 1
+}
+endsnippet
+
+
+snippet func-return "func with return value"
+function myfunc()
+{
+    local  __resultvar=$1
+    local  myresult='some value'
+    if [[ "$__resultvar" ]]; then
+        eval $__resultvar="'$myresult'"
+    else
+        echo "$myresult"
+    fi
+}
+
+myfunc result
+echo $result
+result2=$(myfunc)
+echo $result2
+
+endsnippet
+
+snippet templete "shell templete"
+main() {
+    foo
+    bar
+    baz
+}
+
+foo() {
+}
+
+bar() {
+}
+
+baz() {
+}
+
+if [[ "$BASH_SOURCE[0]" == "\$0" ]]; then
+    main "$@"
+fi
+
+endsnippet
+
+# consider to to use default "go" or "getopt"
+snippet opts "parse input opts"
+usage() {
+cat << EOF
+usage: \$0 options
+
+    -h|--help print this message
+    --dry-run dryrun
+    ${0}
+EOF
+exit 1
+}
+
+while [ $# -gt 0 ]
+do
+    case "\$1" in
+        -h | --help)
+            usage 0
+            exit 0
+            ;;
+        --dry-run)
+            DRY_RUN=1;
+            ;;
+        $0
+        *)
+        usage
+       esac
+       shift
+done
+endsnippet

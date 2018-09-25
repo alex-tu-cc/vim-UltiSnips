@@ -1,0 +1,285 @@
+
+# string substitution
+snippet print "default print"
+endsnippet
+
+snippet print_substitution "print string substitution from order {0}"
+print(str("{0}-{0}-{1}").format("string1", "string2"));
+endsnippet
+
+snippet print_substitution_key "print string substitution by key value"
+print(str("{key1}-{key1}-{key2}").format(key1 = "string1",key2 = "string2"));
+endsnippet
+
+snippet print_substitution_dic "print string substitution by dic object"
+print(str("{dic.key1}-{dic.key1}-{dic.key2}").format(dic);
+endsnippet
+
+
+snippet print_format "print formated string "
+print("2 decimal places: %.2f" %(20));
+endsnippet
+
+
+# function
+snippet func_empty "function with keywork argument"
+def some_func(arg_1, arg_2, kwarg_1=None, kwarg_2=None):
+	if kwarg_1 != None:
+		print(kwarg_1)
+	# pass means no operation, a dummy key word to pass syntax exame.
+	pass
+
+some_func("abc", "car", kwarg_1='Not a big deal')
+endsnippet
+
+snippet func_result_container "custom result container"
+# only mtable variables could be revise.
+# containers and user-defined typs are generally mutable.
+# http://effbot.org/pyfaq/how-do-i-write-a-function-with-output-parameters-call-by-reference.htm
+ class result_container:
+     def __init__(self, **kwargs):
+	         self.__dict__.update(kwargs) # copy arguments to attributes
+
+			 def func(a, b):
+			     return result_container(a='new-value', b=b+1)
+
+				 result = func(x, y)
+				 print result.a, result.b
+endsnippet
+
+# class
+snippet class_member "class with memebers "
+class MyClass(object):
+
+    """Docstring for MyClass. """
+    data1="value1"
+    def __init__(self):
+        """TODO: to be defined1. """
+        data1=self."another value"
+endsnippet
+
+# file accessing
+snippet file_read_lines "read file to lists"
+file.seek(0); call index back to zero, maybe you did read file before.
+content=file.readlines()
+content=[i.rstrip("\n") for i in content
+print(content)
+endsnippet
+
+snippet open_template_text_content "open file in relative folder"
+import os
+
+def get_template_path(path):
+    file_path = os.path.join(os.getcwd(), path)
+    if not os.path.isfile(file_path):
+        raise Exception("This is not a valid template path %s"%(file_path))
+    return file_path
+
+def get_template(path):
+    file_path = get_template_path(path)
+    return open(file_path).read()
+
+def render_context(template_string, context):
+    return template_string.format(**context)
+
+file_ = 'templates/email_message.txt'
+file_html = 'templates/email_message.html'
+template = get_template(file_)
+template_html = get_template(file_html)
+context = {
+    "name": "Justin",
+    "date": None,
+    "total": None
+}
+
+print(render_context(template, context))
+print(render_context(template_html, context))
+"""
+/abc/ad/file.txt
+\hi\this\ois\a\file.txt
+open("\hi\this\ois\a\file.txt").read()
+open("/abc/ad/file.txt").read()
+"""
+endsnippet
+
+
+snippet mail_out "send a mail out"
+```
+# django is more convenient
+ [day 10](https://www.udemy.com/30-days-of-python/learn/v4/t/lecture/4638952?start=0)
+# use gmail smtp protocol as example.
+ * enable smtp first
+    * python [smtp lib](https://docs.python.org/2/library/smtplib.html)
+ * [enable less secure app accessing first](https://myaccount.google.com/lesssecureapps?pli=1)
+ * send by html format
+  * [email library](https://docs.python.org/2/library/email.html?highlight=email#module-email)
+  * html_format_email.py
+* http://codehandbook.org/how-to-read-email-from-gmail-using-python/
+* https://developers.google.com/gmail/api/quickstart/python
+```
+import smtplib
+host = "smtp.gmail.com"
+port = 587
+username = $ACCOUNT
+password = $PASS
+from_email = username
+to_list = ["$EMAIL_ADDR"]
+
+email_conn = smtplib.SMTP(host, port)
+email_conn.ehlo()
+email_conn.starttls()
+email_conn.login(username, password)
+email_conn.sendmail(from_email, to_list, "Hello there this is an email message")
+email_conn.quit()
+
+endsnippet
+
+# CSV file handling
+snippet open_csv_w "open csv file to write"
+import csv
+import
+
+with open("data.csv", "w+") as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(["Col 1", "Col 2"])
+
+    fieldnames = ["id", "title"]
+    writer_dic = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer_dic.writeheader()
+    writer_dic.writerow({"id": 123, "title": "New title"})
+endsnippet
+
+
+# CSV file handling
+snippet open_csv_r "open csv file to read"
+import csv
+# used to write to temp file
+import shutil
+from tempfile import NamedTemporaryFile
+
+with open("data.csv") as csvfile:
+    reader = csv.reader(csvfile)
+    reader_list = list(reader)
+    print(reader_list)
+    print(len(reader_list))
+
+
+filename = "data.csv"
+temp_file = NamedTemporaryFile(delete=False)
+
+with open(filename, "rb") as csvfile, temp_file:
+    reader = csv.DictReader(csvfile)
+    fieldnames = ['id', 'name', 'email', 'amount', 'sent', 'date']
+    writer = csv.DictWriter(temp_file, fieldnames=fieldnames)
+    writer.writeheader()
+    
+    for row in reader:
+        #print(row['id'] == 4)
+        if edit_id is not None:
+            if int(row['id']) == int(edit_id):
+                row['amount'] = amount
+                row['sent'] = sent
+        elif email is not None and edit_id is None:
+            if str(row['email']) == str(email):
+                row['amount'] = amount
+                row['sent'] = sent
+        else:
+            pass
+        writer.writerow(row)
+    # Recursively move a file or directory (src) to another location (dst).
+    shutil.move(temp_file.name, filename)
+
+endsnippet
+
+
+# parameter
+snippet opts "base opts template"
+from argparse import ArgumentParser
+parser = ArgumentParser(prog="hungry")
+parser.add_argument("type", type=str, choices=['view', 'message'])
+parser.add_argument('-id', '--user_id', type=int)
+parser.add_argument('-e', '--email', type=str)
+
+args = parser.parse_args()
+
+if args.type == "view":
+	print(read_data(user_id=args.user_id))
+	print(read_data(email=args.email))
+elif args.type == "message":
+	print("send message")
+endsnippet
+
+# web scrape
+snippet get_web "get web context"
+from bs4 import BeautifulSoup
+base_url = 'https://www.yelp.com/search?find_desc=Restaurants&find_loc='
+loc = 'Newport+Beach,+CA'
+page = 10
+url = base_url + loc + "&start=" + str(page)
+yelp_r = requests.get(url)
+yelp_soup = BeautifulSoup(yelp_r.text, 'html.parser')
+businesses = yelp_soup.findAll('div', {'class': 'biz-listing-large'})
+# not finished ........ [TODO]
+
+endsnippet
+
+# web scrape
+snippet get_web_js "get web context from java script pages"
+# also could refer scrapy library : http://blog.datahut.co/tutorial-how-to-scrape-amazon-using-python-scrapy/
+# http://city.shaform.com/blog/2016/02/28/scrapy.html
+# there is also another plug-in "imagescraper"
+# http://www.largitdata.com/course_list/11
+import requests
+from bs4 import BeautifulSoup
+from selenium import webdriver
+url = "http://www.chrisburkard.com/"
+
+web_r = requests.get(url)
+web_soup = BeautifulSoup(web_r.text, 'html.parser')
+print(web_soup.findAll("img"))
+# if you are scraping normal page, it's enough above.
+
+# but if you are scraping java script based page.
+
+driver = webdriver.Firefox()
+driver.get(url)
+html = driver.execute_script("return document.documentElement.outerHTML")
+sel_soup = BeautifulSoup(html, 'html.parser')
+# here, you can use "${property}" to find out property value.
+print sel_soup.findAll("img")[0]["src"]
+endsnippet
+
+
+snippet api-requests.get-auth1 "request.get with Oauth1"
+import requests
+
+from requests_oauthlib import OAuth1
+snippet api-requests.get-auth1 "request.get with Oauth1"
+consumer_key= 'NZTJrWhij8kemtAXmfyhyA'
+consumer_secret = 'JtcAesDkKuNltcKdwR7NEaUkgm8'
+token = 'TCipoxU_lYo55-F3rS10XdnN6f-3-KQI'
+token_secret = '5gAZ99Arn2x_LIOVM25AWy8H84c'
+
+# way 1
+url ='https://api.yelp.com/v2/search?term=food&location=San+Francisco'
+r = requests.get(url, auth=auth)
+print(r.text)
+
+# way 2
+url ='https://api.yelp.com/v2/search'
+params = {
+	"term": "food",
+	"location": "San Francisco",
+}
+r = requests.get(url, auth=auth, params=params)
+print(r.text)
+endsnippet
+
+# for
+
+snippet for_2_parameter "forequest.get with Oauth1r loop with 2 parameter"
+names=['james','john','jack']
+email=['gmail','hotmail']
+for i,j in zip(names,email):
+	print(i,j)
+endsnippet

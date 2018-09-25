@@ -1,0 +1,19 @@
+
+
+# debug by :echo expand('%:p... ect')
+snippet head "Jekyll post header"
+---
+title: ${1:`!v expand('%:p:t:r')`}
+subtitle:
+layout: post
+date: `!v strftime("%Y-%m-%d")`
+categories: [${2:`!v expand('%:p:h:h:t')`}]
+tags:
+  - ${4}
+---
+${0}
+endsnippet
+
+# vim:ft=snippets:
+
+
